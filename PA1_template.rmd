@@ -1,0 +1,94 @@
+---
+title: "Reproducible research - week2.rmd"
+author: "Raghu Maan"
+date: "3/22/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Reproducible research - week 2 assignment
+
+###1. Code for reading in the dataset and/or processing the data
+
+```{r}
+setwd("/Users/t93ku6h/Documents/Development/coursera/Reproducible-Research/week2")
+if(!file.exists('activity.csv')){
+    unzip('activity.zip')
+}
+activity_data <- read.csv('activity.csv')
+```
+
+####Summary
+```{r}
+summary(activity_data)
+```
+
+###2. Histogram of the total number of steps taken each day
+```{r}
+#install.packages("ggplot2")
+library(ggplot2)
+steps_per_day <- tapply(activity_data$steps, activity_data$date, sum, na.rm=TRUE)
+qplot(steps_per_day, xlab='Steps per day', ylab='Frequency', binwidth=1000)
+png_file <- "total-steps.png"
+dev.print(png, file = png_file, width = 400, height = 400)
+dev.off()
+```
+
+###3. Calculate and report the mean and median of the total number of steps taken per day
+```{r}
+summary(steps_per_day)
+```
+
+###4. Time series plot of the average number of steps taken
+```{r}
+library(dplyr)
+#split the activity data by time internval (0,5,10..) and run the mean function over the splitted data
+mean_steps_per_interval <- aggregate(x=list(steps=activity_data$steps), by=list(interval=activity_data$interval), FUN=mean, na.rm=TRUE)
+head(mean_steps_per_interval)
+#plot interval by steps
+with(mean_steps_per_interval,plot(interval,steps,type="l",ylab="average number of steps",xlab="5-minute time interval"))
+png_file <- "average-steps.png"
+dev.print(png, file = png_file, width = 400, height = 400)
+dev.off()
+```
+
+###5. The 5-minute interval that, on average, contains the maximum number of steps
+mean_steps_per_interval[which.max(mean_steps_per_interval$steps),"interval"]
+
+###6. Code to describe and show a strategy for imputing missing data 
+```{r}
+#install.packages("mice")
+library(mice)
+#show missing data - shows 2304 missing entries
+md.pattern(activity_data,plot=TRUE)
+#impute data with pmm method
+#https://statisticalhorizons.com/predictive-mean-matching
+activity_data_imputed <- mice(activity_data,m=1,method = "pmm")
+```
+
+###7. Histogram of the total number of steps taken each day after missing values are imputed
+```{r}
+activity_data_imputed_completed <- complete(activity_data_imputed,1)
+steps_per_day <- tapply(activity_data_imputed_completed$steps, activity_data_imputed_completed$date, sum)
+qplot(steps_per_day, xlab='Steps per day', ylab='Frequency', binwidth=1000)
+png_file <- "total-steps-imputed.png"
+dev.print(png, file = png_file, width = 400, height = 400)
+dev.off()
+```
+
+###8. Panel plot comparing the average number of steps taken per 5-minute interval across weekdays and weekends
+```{r}
+activity_data$day <-  ifelse(as.POSIXlt(activity_data$date)$wday %in% c(0,6), 'weekend', 'weekday')
+activity_data_with_dayofweek <- aggregate(steps ~ interval + day, data=activity_data, mean)
+ggplot(activity_data_with_dayofweek, aes(interval, steps)) + 
+    geom_line() + 
+    facet_grid(day ~ .) +
+    xlab("5-minute time interval") + 
+    ylab("avarage number of steps")
+png_file <- "avearge-steps-by-dayofweek.png"
+dev.print(png, file = png_file, width = 400, height = 400)
+dev.off()
+```

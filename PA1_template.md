@@ -52,7 +52,7 @@ qplot(steps_per_day, xlab='Steps per day', ylab='Frequency', binwidth=1000)
 ![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3-1.png)
 
 ```r
-png_file <- "total-steps.png"
+png_file <- "figure/total-steps.png"
 dev.print(png, file = png_file, width = 400, height = 400)
 ```
 
@@ -108,7 +108,7 @@ with(mean_steps_per_interval,plot(interval,steps,type="l",ylab="average number o
 ![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5-1.png)
 
 ```r
-png_file <- "average-steps.png"
+png_file <- "figure/average-steps.png"
 dev.print(png, file = png_file, width = 400, height = 400)
 ```
 
@@ -178,7 +178,7 @@ qplot(steps_per_day, xlab='Steps per day', ylab='Frequency', binwidth=1000)
 ![plot of chunk unnamed-chunk-7](figure/unnamed-chunk-7-1.png)
 
 ```r
-png_file <- "total-steps-imputed.png"
+png_file <- "figure/total-steps-imputed.png"
 dev.print(png, file = png_file, width = 400, height = 400)
 ```
 
@@ -211,7 +211,7 @@ ggplot(activity_data_with_dayofweek, aes(interval, steps)) +
 ![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8-1.png)
 
 ```r
-png_file <- "avearge-steps-by-dayofweek.png"
+png_file <- "figure/avearge-steps-by-dayofweek.png"
 dev.print(png, file = png_file, width = 400, height = 400)
 ```
 

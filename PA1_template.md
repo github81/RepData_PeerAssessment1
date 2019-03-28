@@ -49,7 +49,7 @@ steps_per_day <- tapply(activity_data$steps, activity_data$date, sum, na.rm=TRUE
 qplot(steps_per_day, xlab='Steps per day', ylab='Frequency', binwidth=1000)
 ```
 
-![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3-1.png)
+![](figure/total-steps.png)
 
 ```r
 png_file <- "figure/total-steps.png"
@@ -105,7 +105,7 @@ head(mean_steps_per_interval)
 with(mean_steps_per_interval,plot(interval,steps,type="l",ylab="average number of steps",xlab="5-minute time interval"))
 ```
 
-![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5-1.png)
+![](figure/average-steps.png)
 
 ```r
 png_file <- "figure/average-steps.png"
@@ -175,7 +175,7 @@ steps_per_day <- tapply(activity_data_imputed_completed$steps, activity_data_imp
 qplot(steps_per_day, xlab='Steps per day', ylab='Frequency', binwidth=1000)
 ```
 
-![plot of chunk unnamed-chunk-7](figure/unnamed-chunk-7-1.png)
+![](figure/total-steps-imputed.png)
 
 ```r
 png_file <- "figure/total-steps-imputed.png"
@@ -208,7 +208,7 @@ ggplot(activity_data_with_dayofweek, aes(interval, steps)) +
     ylab("avarage number of steps")
 ```
 
-![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8-1.png)
+![](figure/avearge-steps-by-dayofweek.png)
 
 ```r
 png_file <- "figure/avearge-steps-by-dayofweek.png"
